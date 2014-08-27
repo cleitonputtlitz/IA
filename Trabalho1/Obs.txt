@@ -1,0 +1,8 @@
+Trabalho 1: Sistema de inferência Fuzzy
+	* Ferramenta de apoio para a validação da matrícula nas disciplinas de CC-UFFS.
+	
+	Entradas: 1 - Veteranice (Baixo[0/40], Médio[30/70], Alto[60/100])
+	          2 - Reincidência (Baixo[0/60], Médio[40/80], Alto[60/100])
+	          3 - Média do Curso (Baixo[0/50], Médio[40/80], Alto[70/100])
+			  
+	Saída: % de chance de ser concorrente.
