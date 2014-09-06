@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1409785472 source:c:\wamp\www\ia\trabalho1\fuzzy\main.c
+	<stdio.h>
+	<stdlib.h>
+
