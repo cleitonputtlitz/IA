@@ -57,7 +57,6 @@ typedef struct _lista{
 	int qtd;
 }TLista;
 
-
 TLista *initLista();
 int inserirAluno(TLista *lista);
 void imprimeMenu();
@@ -75,7 +74,7 @@ TLista *initLista(){
 
 int inserirAluno(TLista *lista){
 	TAluno *novo = (TAluno*)malloc(sizeof(TAluno));
-	system("clear");
+//	system("clear");
 	if(novo != NULL){
 		double media = 0.0;
 
@@ -110,34 +109,31 @@ int inserirAluno(TLista *lista){
 	
 	calcAceitacao(novo);
 	
-	if(lista->head == NULL){
+	if(lista->head == NULL){//adiciona no início
 		lista->head = novo;
 	}else{
 		TAluno *aux = lista->head;
 		TAluno *ant = NULL;
-
-		if(lista->head->prox == NULL){
-			if(lista->head->a >= novo->a){//se aux é maior que novo **Verificar
-				novo->prox = lista->head;
-				lista->head = novo;
-			}else{
-				novo->prox  = lista->head->prox;
-				lista->head = novo;
-			}
-		}else{
-			while(aux->prox != NULL){
+		//adiciona por ordem de aceitação
+		while(1){
+			if(aux->a > novo->a){
+				//busca proximo elemento da lista
 				ant = aux;
-				aux = aux->prox;
-				if(aux->a < novo->a){//se aux é maior que novo
-					if (lista->head == aux){
-						novo->prox = lista->head->prox;
-						lista->head = novo;
-					}else{
-						novo->prox = ant->prox;
-						ant->prox = novo;
-					}
-				}else{}
-					
+				aux  = aux ->prox;
+				if(aux == NULL){//se chegou ao fim da lista, insere
+					ant->prox = novo;
+					break;
+				}
+			}else{
+				if(lista->head == aux){ //insere no inicio da lista
+					novo->prox = lista->head;
+					lista->head = novo;
+					break;
+				}else{ //insere no meio
+					novo->prox = aux;
+					ant->prox = novo;
+					break;
+				}
 			}
 		}
 	}
@@ -290,7 +286,7 @@ void calcAceitacao(TAluno *aluno){
 }
 
 void imprimeMenu(){
-	printf("**************************************************\n");
+	printf("\n**************************************************\n");
 	printf("*   1 - Inserir aluno                            *\n");
 	printf("*   2 - Imprimir alunos cadastrados              *\n");
 	printf("*                                                *\n");
@@ -303,8 +299,9 @@ void imprimirAluno(TLista *lista){
 	TAluno *aux = lista->head;
 	if(aux == NULL) printf("Lista de alunos vazia!\n");
 	else{
+		printf("\n\tAlunos cadastrados:\n");
 		while(aux != NULL){
-			printf("Imprime Nome: %s\n", aux->nome);
+			printf("Nome: %s\n", aux->nome);
 			aux = aux->prox;
 		}
 	}
