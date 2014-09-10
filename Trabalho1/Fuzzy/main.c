@@ -42,6 +42,7 @@
 #define ACEMALTAF 90//muito alta final
 
 #define T100 100
+#define NRegras 39
 
 typedef struct _aluno{
 	char nome[T100 + 1];
@@ -59,6 +60,9 @@ typedef struct _lista{
 
 TLista *initLista();
 int inserirAluno(TLista *lista);
+int calcMin(int a, int b, int c);
+int calcIndiceAceitacao(int vet[T100], int indiceA, int indiceB);
+void initVetAceitacao(int vet[T100]);
 void imprimeMenu();
 void imprimirAluno(TLista *lista);
 void calcAceitacao(TAluno *aluno);
@@ -142,6 +146,14 @@ int inserirAluno(TLista *lista){
 	return 0;
 }
 
+int calcMin(int a, int b, int c){
+	int min = a;
+	if(min >= b) min = b;
+	if(min >= c) min = c;
+	
+	return min;
+}
+
 void calcAceitacao(TAluno *aluno){
 	/* 1 - muito baixo
 	 * 2 - baixo
@@ -149,48 +161,69 @@ void calcAceitacao(TAluno *aluno){
 	 * 4 - alto
 	 * 5 - muito alto
 	 */
-	int conjuntoAceitacao = 0;
+	int conjuntoAceitacao[NRegras];
+	int indiceAceitacao[T100];
+	initVetAceitacao(indiceAceitacao);
+	int minAluno = 0;
+	int pos = 0, i = 0, j = 0;
+	int indiceA = 0, indiceB = 0; // menor indice, maior indice
 	
-	int indice_calculado = 0;
+	if(aluno->v > 0 && aluno->r > 0 && aluno->m > 0){
+		minAluno = calcMin(aluno->v, aluno->r, aluno->m); // pega o min
+	}else{
+		aluno->a = -1;
+		return;
+	}
+	
+/*	for(i=0; i<T100; i++){
+		printf("vetor: %d\t%d\n", indiceAceitacao[i], i);
+	}
+*/
 	
 	if(aluno->v >= VETBAIXAI && aluno->v <= VETBAIXAF){
 		if(aluno->r >= REIBAIXAI && aluno->r <= REIBAIXAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// baixo / baixo / baixo
 				//mapear para conjunto
-				conjuntoAceitacao = 1;
+				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// baixo / baixo / medio
 				//mapear para conjunto
-				conjuntoAceitacao = 1;
+				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// baixo / baixo / alto
 				//mapear para conjunto
-				conjuntoAceitacao = 1;
+				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 		}
 		if(aluno->r >= REIMEDIAI && aluno->r <= REIMEDIAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// baixo / medio / baixo
+				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// baixo / medio / medio
+				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// baixo / medio / alto
+				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 		}
 		if(aluno->r >= REIALTAI && aluno->r <= REIALTAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// baixo / alto / baixo
+				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// baixo / alto / medio
+				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// baixo / alto / alto
+				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
 	}
@@ -198,34 +231,43 @@ void calcAceitacao(TAluno *aluno){
 		if(aluno->r >= REIBAIXAI && aluno->r <= REIBAIXAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// medio / baixo / baixo
+				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// medio / baixo / medio
+				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// medio / baixo / alto
+				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
 		if(aluno->r >= REIMEDIAI && aluno->r <= REIMEDIAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// medio / medio / baixo
+				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// medio / medio / medio
+				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// medio / medio / alto
+				conjuntoAceitacao[pos++] = 4; // alto
 			}
 		}
 		if(aluno->r >= REIALTAI && aluno->r <= REIALTAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// medio / alto / baixo
+				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// medio / alto / medio
+				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// medio / alto / alto
+				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
 	}
@@ -233,56 +275,119 @@ void calcAceitacao(TAluno *aluno){
 		if(aluno->r >= REIBAIXAI && aluno->r <= REIBAIXAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// alto / baixo / baixo
+				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// alto / baixo / medio
+				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// alto / baixo / alto
+				conjuntoAceitacao[pos++] = 4; // alto
 			}
 		}
 		if(aluno->r >= REIMEDIAI && aluno->r <= REIMEDIAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// alto / medio / baixo
+				conjuntoAceitacao[pos++] = 4; // alto
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// alto / medio / medio
+				conjuntoAceitacao[pos++] = 4; // alto
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// alto / medio / alto
+				conjuntoAceitacao[pos++] = 5; // muito alto
 			}
 		}
 		if(aluno->r >= REIALTAI && aluno->r <= REIALTAF){
 			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
 				// alto / alto / baixo
+				conjuntoAceitacao[pos++] = 4; // alto
 			}
 			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
 				// alto / alto / medio
+				conjuntoAceitacao[pos++] = 4; // alto
 			}
 			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
 				// alto / alto / alto
+				conjuntoAceitacao[pos++] = 5; // muito alto
 			}
 		}
 	}
 	
-	if(conjuntoAceitacao >= ACEMBAIXAI && conjuntoAceitacao <= ACEMBAIXAF){
-		
+	for(i = 0; i < NRegras && i < pos; i++){
+		if(conjuntoAceitacao[i] == 1){ // na posição de I disparou a regra no conjunto muito baixa
+			for(j = ACEMBAIXAI; j <= ACEMBAIXAF; j++){
+				if(minAluno > indiceAceitacao[j]){
+					indiceAceitacao[j] = minAluno;
+					if(indiceA > j) indiceA = j;
+					if(indiceB < j) indiceB = j;
+				}
+			}
+		}
+		if(conjuntoAceitacao[i] == 2){
+			for(j = ACEBAIXAI; j <= ACEBAIXAF; j++){
+				if(minAluno > indiceAceitacao[j]){
+					indiceAceitacao[j] = minAluno;
+					if(indiceA > j) indiceA = j;
+					if(indiceB < j) indiceB = j;
+				}
+			}
+		}
+		if(conjuntoAceitacao[i] == 3){
+			for(j = ACEMEDIAI; j <= ACEMEDIAF; j++){
+				if(minAluno > indiceAceitacao[j]){
+					indiceAceitacao[j] = minAluno;
+					if(indiceA > j) indiceA = j;
+					if(indiceB < j) indiceB = j;
+				}
+			}
+		}
+		if(conjuntoAceitacao[i] == 4){
+			for(j = ACEALTAI; j <= ACEALTAF; j++){
+				if(minAluno > indiceAceitacao[j]){
+					indiceAceitacao[j] = minAluno;
+					if(indiceA > j) indiceA = j;
+					if(indiceB < j) indiceB = j;
+				}
+			}
+		}
+		if(conjuntoAceitacao[i] == 5){
+			for(j = ACEMALTAI; j <= ACEMALTAF; j++){
+				if(minAluno > indiceAceitacao[j]){
+					indiceAceitacao[j] = minAluno;
+					if(indiceA > j) indiceA = j;
+					if(indiceB < j) indiceB = j;
+				}
+			}
+		}
 	}
-	if(conjuntoAceitacao >= ACEBAIXAI && conjuntoAceitacao <= ACEBAIXAF){
-		
-	}
-	if(conjuntoAceitacao >= ACEMEDIAI && conjuntoAceitacao <= ACEMEDIAF){
-		
-	}
-	if(conjuntoAceitacao >= ACEALTAI && conjuntoAceitacao <= ACEALTAF){
-		
-	}
-	if(conjuntoAceitacao >= ACEMALTAI && conjuntoAceitacao <= ACEMALTAF){
-		
-	}
-	//mapear a variavel no conjunto e aplicar regra max/min
+	
 	//calcular o indice de aceitação
-	aluno->a = indice_calculado;
+	aluno->a = calcIndiceAceitacao(indiceAceitacao, indiceA, indiceB);
+}
+
+int calcIndiceAceitacao(int vet[T100], int a, int b){
+	int i, j;
+	int areaA = vet[a], areaB = vet[b];
+	for(i = a, j = b; i <= j; ){
+		if(areaA <= areaB){
+			areaA += vet[i++];
+		}else{
+			areaB += vet[j--];
+		}
+	}
+	return vet[--i];
+}
+
+void initVetAceitacao(int vet[T100]){
+	int i;
+	
+	for(i=0; i < T100; i++){
+		vet[i] = 0;
+	}
+	return;
 }
 
 void imprimeMenu(){
@@ -301,7 +406,7 @@ void imprimirAluno(TLista *lista){
 	else{
 		printf("\n\tAlunos cadastrados:\n");
 		while(aux != NULL){
-			printf("Nome: %s\n", aux->nome);
+			printf("Nome: %s\tAceitacao: %d\n", aux->nome, aux->a);
 			aux = aux->prox;
 		}
 	}
@@ -311,11 +416,11 @@ void limpaLista(TLista *lista){//verificar
 	TAluno *aux = lista->head;
 	TAluno *prox = NULL;
 	while(aux != NULL){
+		printf("Limpando aluno: %s!\n", aux->nome);
 		prox = aux->prox;
 		free(aux);
 		aux = prox;
 	}
-	free(lista->head);
 	free(lista);
 	printf("Limpou dados\n");
 }
