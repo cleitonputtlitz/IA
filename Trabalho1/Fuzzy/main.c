@@ -29,17 +29,17 @@
 #define REIALTAI 60//alta inicial
 #define REIALTAF 100//alta final
 
-//aceitação ****************************************ARRUMAR OS DADOS
+//aceitação
 #define ACEMBAIXAI 0//muito baixa inicial
-#define ACEMBAIXAF 10//muito baixa final
-#define ACEBAIXAI 20//baixa final
-#define ACEBAIXAF 30//baixa inicial
-#define ACEMEDIAI 40//media inicial
-#define ACEMEDIAF 50//media final
-#define ACEALTAI 60//alta inicial
-#define ACEALTAF 70//alta final
-#define ACEMALTAI 80//muito alta inicial
-#define ACEMALTAF 90//muito alta final
+#define ACEMBAIXAF 33//muito baixa final
+#define ACEBAIXAI 16//baixa final
+#define ACEBAIXAF 50//baixa inicial
+#define ACEMEDIAI 33//media inicial
+#define ACEMEDIAF 66//media final
+#define ACEALTAI 50//alta inicial
+#define ACEALTAF 83//alta final
+#define ACEMALTAI 66//muito alta inicial
+#define ACEMALTAF 100//muito alta final
 
 #define T100 100
 #define NRegras 39
@@ -318,6 +318,7 @@ void calcAceitacao(TAluno *aluno){
 	
 	for(i = 0; i < NRegras && i < pos; i++){
 		if(conjuntoAceitacao[i] == 1){ // na posição de I disparou a regra no conjunto muito baixa
+			printf("conjuntoAceitacao[i] == 1\n");
 			for(j = ACEMBAIXAI; j <= ACEMBAIXAF; j++){
 				if(minAluno > indiceAceitacao[j]){
 					indiceAceitacao[j] = minAluno;
@@ -327,6 +328,7 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 		if(conjuntoAceitacao[i] == 2){
+			printf("conjuntoAceitacao[i] == 2\n");
 			for(j = ACEBAIXAI; j <= ACEBAIXAF; j++){
 				if(minAluno > indiceAceitacao[j]){
 					indiceAceitacao[j] = minAluno;
@@ -336,6 +338,7 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 		if(conjuntoAceitacao[i] == 3){
+			printf("conjuntoAceitacao[i] == 3\n");
 			for(j = ACEMEDIAI; j <= ACEMEDIAF; j++){
 				if(minAluno > indiceAceitacao[j]){
 					indiceAceitacao[j] = minAluno;
@@ -345,6 +348,7 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 		if(conjuntoAceitacao[i] == 4){
+			printf("conjuntoAceitacao[i] == 4\n");
 			for(j = ACEALTAI; j <= ACEALTAF; j++){
 				if(minAluno > indiceAceitacao[j]){
 					indiceAceitacao[j] = minAluno;
@@ -354,6 +358,7 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 		if(conjuntoAceitacao[i] == 5){
+			printf("conjuntoAceitacao[i] == 5\n");
 			for(j = ACEMALTAI; j <= ACEMALTAF; j++){
 				if(minAluno > indiceAceitacao[j]){
 					indiceAceitacao[j] = minAluno;
@@ -378,7 +383,10 @@ int calcIndiceAceitacao(int vet[T100], int a, int b){
 			areaB += vet[j--];
 		}
 	}
-	return vet[--i];
+	//for(j=0;j<T100;j++){
+		//printf("v %d\t i %d\n",vet[j],j);
+	//}
+	return --i;
 }
 
 void initVetAceitacao(int vet[T100]){
