@@ -3,7 +3,6 @@
 #include <string.h>
 
 //veteranice
-#define VET 100
 #define VETBAIXAI 0 //baixa inicial
 #define VETBAIXAF 50//baixa final
 #define VETMEDIAI 35//media inicial
@@ -12,7 +11,6 @@
 #define VETALTAF 100//alta final
 
 //media
-#define MED 100
 #define MEDBAIXAI 0//baixa inicial
 #define MEDBAIXAF 50//baixa final
 #define MEDMEDIAI 40//media inicial
@@ -21,7 +19,6 @@
 #define MEDALTAF 100//alta final
 
 //reincidencia
-#define REI 100
 #define REIBAIXAI 0//baixa inicial
 #define REIBAIXAF 60//baixa final
 #define REIMEDIAI 40//media inicial
@@ -41,8 +38,10 @@
 #define ACEMALTAI 66//muito alta inicial
 #define ACEMALTAF 100//muito alta final
 
+#define VET 100
+#define MED 100
 #define T100 100
-#define NRegras 39
+#define NREGRAS 39
 
 typedef struct _aluno{
 	char nome[T100 + 1];
@@ -62,11 +61,112 @@ TLista *initLista();
 int inserirAluno(TLista *lista);
 int calcMin(int a, int b, int c);
 int calcIndiceAceitacao(int vet[T100], int indiceA, int indiceB);
-void initVetAceitacao(int vet[T100],int conjuntoAceitacao[NRegras]);
+void initVet(int vet[T100], int conjuntoAceitacao[NREGRAS]);
 void imprimeMenu();
 void imprimirAluno(TLista *lista);
 void calcAceitacao(TAluno *aluno);
 void limpaLista(TLista *lista);
+
+//valores da função veteranice baixa mapeadas no vetor
+int vetVeteraniceB[T100] = {100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+							100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+							100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+							95, 90, 85, 80, 75, 70, 65, 60, 55, 50,
+							45, 40, 35, 30, 25, 20, 15, 10, 5, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//valores da função veteranice media mapeadas no vetor
+int vetVeteraniceM[T100] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 5, 10, 15, 20, 25,
+							30, 35, 40, 45, 50, 55, 60, 65, 70, 75,
+							80, 85, 90, 95, 100, 95, 90, 85, 80, 75,
+							70, 65, 60, 55, 50, 45, 40, 35, 30, 25,
+							20, 15, 10, 5, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//valores da função veteranice alta mapeadas no vetor
+int vetVeteraniceA[T100] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+							55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
+							100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+							100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
+//valores da função reincidencia baixa mapeadas no vetor
+int vetReincidenciaB[T100] = {100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+							100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+							100, 100, 100, 100, 100, 97, 94, 91, 89, 86,
+							83, 80, 77, 74, 71, 69, 66, 63, 60, 57,
+							54, 51, 49, 46, 43, 40, 37, 34, 31, 29,
+							26, 23, 20, 17, 14, 11, 9, 6, 3, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//valores da função reincidencia media mapeadas no vetor
+int vetReincidenciaM[T100] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+							55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
+							95, 90, 85, 80, 75, 70, 65, 60, 55, 50,
+							45, 40, 35, 30, 25, 20, 15, 10, 5, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//valores da função reincidencia alta mapeadas no vetor
+int vetReincidenciaA[T100] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+							7, 13, 20, 27, 33, 40, 47, 53, 60, 67,
+							73, 80, 87, 93, 100, 100, 100, 100, 100, 100,
+							100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+							100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
+//valores da função media baixa mapeadas no vetor
+int vetMediaB[T100] = {100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+						100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+						100, 100, 100, 100, 100, 93, 87, 80, 73, 67,
+						60, 53, 47, 40, 33, 27, 20, 13, 7, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//valores da função media media mapeadas no vetor
+int vetMediaM[T100] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 4, 8, 12, 16, 20,
+						24, 28, 32, 36, 40, 44, 48, 52, 56, 60,
+						64, 68, 72, 76, 80, 84, 88, 92, 96, 100,
+						96, 92, 88, 84, 80, 76, 72, 68, 64, 60,
+						56, 52, 48, 44, 40, 36, 32, 28, 24, 20,
+						16, 12, 8, 4, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//valores da função media alta mapeadas no vetor
+int vetMediaA[T100] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						7, 13, 20, 27, 33, 40, 47, 53, 60, 67,
+						73, 80, 87, 93, 100, 100, 100, 100, 100, 100,
+						100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+						100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
+						
 
 TLista *initLista(){
 	TLista *novo = (TLista*)malloc(sizeof(TLista));
@@ -161,19 +261,19 @@ void calcAceitacao(TAluno *aluno){
 	 * 4 - alto
 	 * 5 - muito alto
 	 */
-	int conjuntoAceitacao[NRegras];
+	int conjuntoAceitacao[NREGRAS];
 	int indiceAceitacao[T100];
-	initVetAceitacao(indiceAceitacao, conjuntoAceitacao);
+	initVet(indiceAceitacao, conjuntoAceitacao);
 	int minAluno = 0;
 	int pos = 0, i = 0, j = 0;
 	int indiceA = 0, indiceB = 0; // menor indice, maior indice
 	
-	
-	
-/*	for(i=0; i<T100; i++){
-		printf("vetor: %d\t%d\n", indiceAceitacao[i], i);
+	if(aluno->v > 0 && aluno->r > 0 && aluno->m > 0){
+		minAluno = calcMin(aluno->v, aluno->r, aluno->m); // pega o min
+	}else{
+		aluno->a = -1;
+		return;
 	}
-*/
 	
 	if(aluno->v > VETBAIXAI && aluno->v < VETBAIXAF){
 		if(aluno->r > REIBAIXAI && aluno->r < REIBAIXAF){
@@ -314,17 +414,8 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 	}
-	for(j=0;j<NRegras;j++){
-		printf("v %d\t i %d\n",conjuntoAceitacao[j],j);
-	}
 		
-	for(i = 0; i < NRegras && i < pos; i++){
-		if(aluno->v > 0 && aluno->r > 0 && aluno->m > 0){
-			minAluno = calcMin(aluno->v, aluno->r, aluno->m); // pega o min
-		}else{
-			aluno->a = -1;
-			return;
-		}
+	for(i = 0; i < NREGRAS && i < pos; i++){
 		if(conjuntoAceitacao[i] == 1){ // na posição de I disparou a regra no conjunto muito baixa
 			printf("conjuntoAceitacao[i] == 1\n");
 			for(j = ACEMBAIXAI; j <= ACEMBAIXAF; j++){
@@ -398,14 +489,14 @@ int calcIndiceAceitacao(int vet[T100], int a, int b){
 	return --i;
 }
 
-void initVetAceitacao(int vet[T100], int conjuntoAceitacao[NRegras]){
+void initVet(int vet[T100], int conjuntoAceitacao[NREGRAS]){
 	int i;
 	
 	for(i=0; i < T100; i++){
 		vet[i] = 0;
 	}
 	
-	for(i=0; i < NRegras; i++){
+	for(i=0; i < NREGRAS; i++){
 		conjuntoAceitacao[i] = 0;
 	}
 	return;
