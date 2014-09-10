@@ -61,7 +61,7 @@ TLista *initLista();
 int inserirAluno(TLista *lista);
 int calcMin(int a, int b, int c);
 int calcIndiceAceitacao(int vet[T100], int indiceA, int indiceB);
-void initVet(int vet[T100], int conjuntoAceitacao[NREGRAS]);
+void initVet(int vet[T100], int conjuntoAceitacao[NREGRAS], int conjuntoValores[NREGRAS]);
 void imprimeMenu();
 void imprimirAluno(TLista *lista);
 void calcAceitacao(TAluno *aluno);
@@ -248,8 +248,8 @@ int inserirAluno(TLista *lista){
 
 int calcMin(int a, int b, int c){
 	int min = a;
-	if(min >= b) min = b;
-	if(min >= c) min = c;
+	if(min > b) min = b;
+	if(min > c) min = c;
 	
 	return min;
 }
@@ -262,65 +262,71 @@ void calcAceitacao(TAluno *aluno){
 	 * 5 - muito alto
 	 */
 	int conjuntoAceitacao[NREGRAS];
+	int conjuntoValores[NREGRAS];
 	int indiceAceitacao[T100];
-	initVet(indiceAceitacao, conjuntoAceitacao);
-	int minAluno = 0;
+	initVet(indiceAceitacao, conjuntoAceitacao, conjuntoValores);
+	
+	//int minAluno = 0;
 	int pos = 0, i = 0, j = 0;
 	int indiceA = 0, indiceB = 0; // menor indice, maior indice
 	
-	if(aluno->v > 0 && aluno->r > 0 && aluno->m > 0){
-		minAluno = calcMin(aluno->v, aluno->r, aluno->m); // pega o min
-	}else{
+	if(aluno->v == 0 && aluno->r == 0 && aluno->m == 0){
 		aluno->a = -1;
 		return;
 	}
+	
+	//o min dos valores é o indice nos vetores...
+	//precisa identificar de qual entrada é o minAluno, se é de vet, rein, med... também ter cuidado com valores iguais no minAluno
 	
 	if(aluno->v > VETBAIXAI && aluno->v < VETBAIXAF){
 		if(aluno->r > REIBAIXAI && aluno->r < REIBAIXAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// baixo / baixo / baixo
-				//mapear para conjunto
-				printf("baixo / baixo / baixo\n");
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaB[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// baixo / baixo / medio
-				//mapear para conjunto
-				printf("baixo / baixo / medio\n");
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaB[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// baixo / baixo / alto
-				//mapear para conjunto
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaB[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 		}
 		if(aluno->r > REIMEDIAI && aluno->r < REIMEDIAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// baixo / medio / baixo
-				printf("baixo / medio / baixo\n");
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaM[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// baixo / medio / medio
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaM[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// baixo / medio / alto
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaM[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 		}
 		if(aluno->r > REIALTAI && aluno->r < REIALTAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// baixo / alto / baixo
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaA[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// baixo / alto / medio
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaA[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// baixo / alto / alto
+				conjuntoValores[pos] = calcMin(vetVeteraniceB[aluno->v], vetReincidenciaA[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
@@ -329,43 +335,51 @@ void calcAceitacao(TAluno *aluno){
 		if(aluno->r > REIBAIXAI && aluno->r < REIBAIXAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// medio / baixo / baixo
-				printf("medio / baixo / baixo\n");
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaB[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// medio / baixo / medio
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaB[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// medio / baixo / alto
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaB[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
 		if(aluno->r > REIMEDIAI && aluno->r < REIMEDIAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// medio / medio / baixo
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaM[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// medio / medio / medio
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaM[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// medio / medio / alto
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaM[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
 		}
 		if(aluno->r > REIALTAI && aluno->r < REIALTAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// medio / alto / baixo
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaA[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// medio / alto / medio
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaA[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// medio / alto / alto
+				conjuntoValores[pos] = calcMin(vetVeteraniceM[aluno->v], vetReincidenciaA[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
@@ -374,42 +388,51 @@ void calcAceitacao(TAluno *aluno){
 		if(aluno->r > REIBAIXAI && aluno->r < REIBAIXAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// alto / baixo / baixo
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaB[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// alto / baixo / medio
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaB[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// alto / baixo / alto
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaB[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
 		}
 		if(aluno->r > REIMEDIAI && aluno->r < REIMEDIAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// alto / medio / baixo
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaM[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// alto / medio / medio
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaM[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// alto / medio / alto
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaM[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 5; // muito alto
 			}
 		}
 		if(aluno->r > REIALTAI && aluno->r < REIALTAF){
 			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// alto / alto / baixo
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaA[aluno->r], vetMediaB[aluno->m]);
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
 			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// alto / alto / medio
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaA[aluno->r], vetMediaM[aluno->m]);
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
 			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// alto / alto / alto
+				conjuntoValores[pos] = calcMin(vetVeteraniceA[aluno->v], vetReincidenciaA[aluno->r], vetMediaA[aluno->m]);
 				conjuntoAceitacao[pos++] = 5; // muito alto
 			}
 		}
@@ -419,8 +442,8 @@ void calcAceitacao(TAluno *aluno){
 		if(conjuntoAceitacao[i] == 1){ // na posição de I disparou a regra no conjunto muito baixa
 			printf("conjuntoAceitacao[i] == 1\n");
 			for(j = ACEMBAIXAI; j <= ACEMBAIXAF; j++){
-				if(minAluno > indiceAceitacao[j]){
-					indiceAceitacao[j] = minAluno;
+				if(conjuntoValores[i] > indiceAceitacao[j]){
+					indiceAceitacao[j] = conjuntoValores[i];
 					if(indiceA > j) indiceA = j;
 					if(indiceB < j) indiceB = j;
 				}
@@ -429,8 +452,8 @@ void calcAceitacao(TAluno *aluno){
 		if(conjuntoAceitacao[i] == 2){
 			printf("conjuntoAceitacao[i] == 2\n");
 			for(j = ACEBAIXAI; j <= ACEBAIXAF; j++){
-				if(minAluno > indiceAceitacao[j]){
-					indiceAceitacao[j] = minAluno;
+				if(conjuntoValores[i] > indiceAceitacao[j]){
+					indiceAceitacao[j] = conjuntoValores[i];
 					if(indiceA > j) indiceA = j;
 					if(indiceB < j) indiceB = j;
 				}
@@ -439,8 +462,8 @@ void calcAceitacao(TAluno *aluno){
 		if(conjuntoAceitacao[i] == 3){
 			printf("conjuntoAceitacao[i] == 3\n");
 			for(j = ACEMEDIAI; j <= ACEMEDIAF; j++){
-				if(minAluno > indiceAceitacao[j]){
-					indiceAceitacao[j] = minAluno;
+				if(conjuntoValores[i] > indiceAceitacao[j]){
+					indiceAceitacao[j] = conjuntoValores[i];
 					if(indiceA > j) indiceA = j;
 					if(indiceB < j) indiceB = j;
 				}
@@ -449,8 +472,8 @@ void calcAceitacao(TAluno *aluno){
 		if(conjuntoAceitacao[i] == 4){
 			printf("conjuntoAceitacao[i] == 4\n");
 			for(j = ACEALTAI; j <= ACEALTAF; j++){
-				if(minAluno > indiceAceitacao[j]){
-					indiceAceitacao[j] = minAluno;
+				if(conjuntoValores[i] > indiceAceitacao[j]){
+					indiceAceitacao[j] = conjuntoValores[i];
 					if(indiceA > j) indiceA = j;
 					if(indiceB < j) indiceB = j;
 				}
@@ -459,8 +482,8 @@ void calcAceitacao(TAluno *aluno){
 		if(conjuntoAceitacao[i] == 5){
 			printf("conjuntoAceitacao[i] == 5\n");
 			for(j = ACEMALTAI; j <= ACEMALTAF; j++){
-				if(minAluno > indiceAceitacao[j]){
-					indiceAceitacao[j] = minAluno;
+				if(conjuntoValores[i] > indiceAceitacao[j]){
+					indiceAceitacao[j] = conjuntoValores[i];
 					if(indiceA > j) indiceA = j;
 					if(indiceB < j) indiceB = j;
 				}
@@ -489,7 +512,7 @@ int calcIndiceAceitacao(int vet[T100], int a, int b){
 	return --i;
 }
 
-void initVet(int vet[T100], int conjuntoAceitacao[NREGRAS]){
+void initVet(int vet[T100], int conjuntoAceitacao[NREGRAS], int conjuntoValores[NREGRAS]){
 	int i;
 	
 	for(i=0; i < T100; i++){
@@ -498,6 +521,7 @@ void initVet(int vet[T100], int conjuntoAceitacao[NREGRAS]){
 	
 	for(i=0; i < NREGRAS; i++){
 		conjuntoAceitacao[i] = 0;
+		conjuntoValores[i] = 0;
 	}
 	return;
 }
