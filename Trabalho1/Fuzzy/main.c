@@ -62,7 +62,7 @@ TLista *initLista();
 int inserirAluno(TLista *lista);
 int calcMin(int a, int b, int c);
 int calcIndiceAceitacao(int vet[T100], int indiceA, int indiceB);
-void initVetAceitacao(int vet[T100]);
+void initVetAceitacao(int vet[T100],int conjuntoAceitacao[NRegras]);
 void imprimeMenu();
 void imprimirAluno(TLista *lista);
 void calcAceitacao(TAluno *aluno);
@@ -163,160 +163,168 @@ void calcAceitacao(TAluno *aluno){
 	 */
 	int conjuntoAceitacao[NRegras];
 	int indiceAceitacao[T100];
-	initVetAceitacao(indiceAceitacao);
+	initVetAceitacao(indiceAceitacao, conjuntoAceitacao);
 	int minAluno = 0;
 	int pos = 0, i = 0, j = 0;
 	int indiceA = 0, indiceB = 0; // menor indice, maior indice
 	
-	if(aluno->v > 0 && aluno->r > 0 && aluno->m > 0){
-		minAluno = calcMin(aluno->v, aluno->r, aluno->m); // pega o min
-	}else{
-		aluno->a = -1;
-		return;
-	}
+	
 	
 /*	for(i=0; i<T100; i++){
 		printf("vetor: %d\t%d\n", indiceAceitacao[i], i);
 	}
 */
 	
-	if(aluno->v >= VETBAIXAI && aluno->v <= VETBAIXAF){
-		if(aluno->r >= REIBAIXAI && aluno->r <= REIBAIXAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+	if(aluno->v > VETBAIXAI && aluno->v < VETBAIXAF){
+		if(aluno->r > REIBAIXAI && aluno->r < REIBAIXAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// baixo / baixo / baixo
 				//mapear para conjunto
+				printf("baixo / baixo / baixo\n");
 				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// baixo / baixo / medio
 				//mapear para conjunto
+				printf("baixo / baixo / medio\n");
 				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// baixo / baixo / alto
 				//mapear para conjunto
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 		}
-		if(aluno->r >= REIMEDIAI && aluno->r <= REIMEDIAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+		if(aluno->r > REIMEDIAI && aluno->r < REIMEDIAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// baixo / medio / baixo
+				printf("baixo / medio / baixo\n");
 				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// baixo / medio / medio
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// baixo / medio / alto
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
 		}
-		if(aluno->r >= REIALTAI && aluno->r <= REIALTAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+		if(aluno->r > REIALTAI && aluno->r < REIALTAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// baixo / alto / baixo
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// baixo / alto / medio
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// baixo / alto / alto
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
 	}
-	if(aluno->v >= VETMEDIAI && aluno->v <= VETMEDIAF){
-		if(aluno->r >= REIBAIXAI && aluno->r <= REIBAIXAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+	if(aluno->v > VETMEDIAI && aluno->v < VETMEDIAF){
+		if(aluno->r > REIBAIXAI && aluno->r < REIBAIXAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// medio / baixo / baixo
+				printf("medio / baixo / baixo\n");
 				conjuntoAceitacao[pos++] = 1; // muito baixa
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// medio / baixo / medio
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// medio / baixo / alto
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
-		if(aluno->r >= REIMEDIAI && aluno->r <= REIMEDIAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+		if(aluno->r > REIMEDIAI && aluno->r < REIMEDIAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// medio / medio / baixo
 				conjuntoAceitacao[pos++] = 2; // baixa
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// medio / medio / medio
 				conjuntoAceitacao[pos++] = 3; // media
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// medio / medio / alto
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
 		}
-		if(aluno->r >= REIALTAI && aluno->r <= REIALTAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+		if(aluno->r > REIALTAI && aluno->r < REIALTAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// medio / alto / baixo
 				conjuntoAceitacao[pos++] = 3; // media
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// medio / alto / medio
 				conjuntoAceitacao[pos++] = 3; // media
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// medio / alto / alto
 				conjuntoAceitacao[pos++] = 3; // media
 			}
 		}
 	}
-	if(aluno->v >= VETALTAI && aluno->v <= VETALTAF){
-		if(aluno->r >= REIBAIXAI && aluno->r <= REIBAIXAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+	if(aluno->v > VETALTAI && aluno->v < VETALTAF){
+		if(aluno->r > REIBAIXAI && aluno->r < REIBAIXAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// alto / baixo / baixo
 				conjuntoAceitacao[pos++] = 3; // media
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// alto / baixo / medio
 				conjuntoAceitacao[pos++] = 3; // media
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// alto / baixo / alto
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
 		}
-		if(aluno->r >= REIMEDIAI && aluno->r <= REIMEDIAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+		if(aluno->r > REIMEDIAI && aluno->r < REIMEDIAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// alto / medio / baixo
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// alto / medio / medio
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// alto / medio / alto
 				conjuntoAceitacao[pos++] = 5; // muito alto
 			}
 		}
-		if(aluno->r >= REIALTAI && aluno->r <= REIALTAF){
-			if(aluno->m >= MEDBAIXAI && aluno->m <= MEDBAIXAF){
+		if(aluno->r > REIALTAI && aluno->r < REIALTAF){
+			if(aluno->m > MEDBAIXAI && aluno->m < MEDBAIXAF){
 				// alto / alto / baixo
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
-			if(aluno->m >= MEDMEDIAI && aluno->m <= MEDMEDIAF){
+			if(aluno->m > MEDMEDIAI && aluno->m < MEDMEDIAF){
 				// alto / alto / medio
 				conjuntoAceitacao[pos++] = 4; // alto
 			}
-			if(aluno->m >= MEDALTAI && aluno->m <= MEDALTAF){
+			if(aluno->m > MEDALTAI && aluno->m < MEDALTAF){
 				// alto / alto / alto
 				conjuntoAceitacao[pos++] = 5; // muito alto
 			}
 		}
 	}
-	
+	for(j=0;j<NRegras;j++){
+		printf("v %d\t i %d\n",conjuntoAceitacao[j],j);
+	}
+		
 	for(i = 0; i < NRegras && i < pos; i++){
+		if(aluno->v > 0 && aluno->r > 0 && aluno->m > 0){
+			minAluno = calcMin(aluno->v, aluno->r, aluno->m); // pega o min
+		}else{
+			aluno->a = -1;
+			return;
+		}
 		if(conjuntoAceitacao[i] == 1){ // na posição de I disparou a regra no conjunto muito baixa
 			printf("conjuntoAceitacao[i] == 1\n");
 			for(j = ACEMBAIXAI; j <= ACEMBAIXAF; j++){
@@ -383,17 +391,22 @@ int calcIndiceAceitacao(int vet[T100], int a, int b){
 			areaB += vet[j--];
 		}
 	}
-	//for(j=0;j<T100;j++){
-		//printf("v %d\t i %d\n",vet[j],j);
-	//}
+	
+	for(j=0;j<T100;j++){
+		printf("-v %d\t i %d\n",vet[j],j);
+	}
 	return --i;
 }
 
-void initVetAceitacao(int vet[T100]){
+void initVetAceitacao(int vet[T100], int conjuntoAceitacao[NRegras]){
 	int i;
 	
 	for(i=0; i < T100; i++){
 		vet[i] = 0;
+	}
+	
+	for(i=0; i < NRegras; i++){
+		conjuntoAceitacao[i] = 0;
 	}
 	return;
 }
