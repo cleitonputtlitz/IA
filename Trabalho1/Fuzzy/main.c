@@ -617,9 +617,9 @@ void imprimeMenu(){
 void imprimirAluno(TLista *lista){
 	limpaTela();
 	TAluno *aux = lista->head;
-	if(aux == NULL) printf("Lista de alunos vazia!\n\n");
+	if(aux == NULL) printf("\n\n\nLista de alunos vazia!\n\n");
 	else{
-		printf("\n\tAlunos cadastrados:\n\n");
+		printf("\n\n\n\tAlunos cadastrados:\n\n");
 		while(aux != NULL){
 			printf("Nome: %s\t\t\tAceitacao: %d\n", aux->nome, aux->a);
 			aux = aux->prox;
@@ -639,7 +639,7 @@ void limpaLista(TLista *lista){//verificar
 }
 
 void limpaTela(){
-	#ifdef LINUX
+	#ifdef linux
 		system("clear");
 	#elif WIN32
 		system("cls");

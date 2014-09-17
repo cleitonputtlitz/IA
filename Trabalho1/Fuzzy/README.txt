@@ -1,8 +1,8 @@
-												Universidade Federal da Fronteira Sul - UFFS
-													      Chapecó - Santa Catarina
-												       Ciência da Computação - Noturno
-											   Inteligência Artificial - Adriano Sanick Padilha
-											  Cleiton Puttlitz, Patrick de Bastiani e Yruí Neris
+Universidade Federal da Fronteira Sul - UFFS
+Chapecó - Santa Catarina
+Ciência da Computação - Noturno
+Inteligência Artificial - Adriano Sanick Padilha
+Cleiton Puttlitz, Patrick de Bastiani e Yruí Neris
 
 Passo 1:
 	Abra o terminal (shell/cmd)
@@ -17,7 +17,7 @@ Passo 3:
 	>   nome_do_programa.exe < in.txt
 	
 	Linux:
-	$   nome_do_programa.out < in.txt
+	$   ./nome_do_programa.out < in.txt
 	
 O seguinte trabalho é referente a disciplina de Inteligência Artificial do curso de Ciência da Computação da UFFS, o mesmo possui como finalidade auxiliar na escolha dos alunos que serão deferidos na solicitação de asjustes dos componente curriculares no curso.
 O sistema utiliza a lógica FUZZY para determinar o indice de aceitação do aluno para poder cursar a disciplina, levando em consideração que os alunos com maior índice terão prioridade na escolha.
