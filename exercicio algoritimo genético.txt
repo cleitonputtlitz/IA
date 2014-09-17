@@ -1,0 +1,12 @@
+baseado no artigo ICA da PUC do Rio, implementar um algortítimo genético contendo
+
+a) Representação binária
+b) decodificação
+c) avaliação
+d) seleção elitista
+e) operadores genéticos (crossover com ponto de corte fixo)
+f) inicialização da população
+g) parametros e critérios de parada (5 gerações)
+
+O algorítimo tem a função de encontrar o ponto de mínimo da seguinte função: 0.3*x^2 - 36*x + 800
+intervalo de confiança (0, 127)
