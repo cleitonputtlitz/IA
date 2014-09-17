@@ -64,6 +64,7 @@ void imprimeMenu();
 void imprimirAluno(TLista *lista);
 void calcAceitacao(TAluno *aluno);
 void limpaLista(TLista *lista);
+void limpaTela();
 
 //valores da função veteranice baixa mapeadas no vetor
 int vetVeteraniceB[T100] = {100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
@@ -494,9 +495,7 @@ void calcAceitacao(TAluno *aluno){
 	}
 		
 	for(i = 0; i < NREGRAS && i < pos; i++){
-		//min = conjuntoValores[i];
 		if(conjuntoAceitacao[i] == 1){ // na posição de I disparou a regra no conjunto muito baixa
-			printf("conjuntoAceitacao[i] == Muito Baixa\n");
 			for(j = ACEMBAIXAI; j < ACEMBAIXAF; j++){
 				if(vetAceitacaoMB[j] < conjuntoValores[i]){
 					if(indiceAceitacao[j] < vetAceitacaoMB[j]){
@@ -512,7 +511,6 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 		if(conjuntoAceitacao[i] == 2){
-			printf("conjuntoAceitacao[i] == Baixa\n");
 			for(j = ACEBAIXAI; j < ACEBAIXAF; j++){
 				if(vetAceitacaoB[j] < conjuntoValores[i]){
 					if(indiceAceitacao[j] < vetAceitacaoB[j]){
@@ -528,7 +526,6 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 		if(conjuntoAceitacao[i] == 3){
-			printf("conjuntoAceitacao[i] == Media\n");
 			for(j = ACEMEDIAI; j < ACEMEDIAF; j++){
 				if(vetAceitacaoM[j] < conjuntoValores[i]){
 					if(indiceAceitacao[j] < vetAceitacaoM[j]){
@@ -544,7 +541,6 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 		if(conjuntoAceitacao[i] == 4){
-			printf("conjuntoAceitacao[i] == Alta\n");
 			for(j = ACEALTAI; j < ACEALTAF; j++){
 				if(vetAceitacaoA[j] < conjuntoValores[i]){
 					if(indiceAceitacao[j] < vetAceitacaoA[j]){
@@ -560,7 +556,6 @@ void calcAceitacao(TAluno *aluno){
 			}
 		}
 		if(conjuntoAceitacao[i] == 5){
-			printf("conjuntoAceitacao[i] == Muito Alta\n");
 			for(j = ACEMALTAI; j < ACEMALTAF; j++){
 				if(vetAceitacaoMA[j] < conjuntoValores[i]){
 					if(indiceAceitacao[j] < vetAceitacaoMA[j]){
@@ -592,9 +587,6 @@ int calcIndiceAceitacao(int vet[T100], int a, int b){
 		}
 	}
 	
-	for(j=0;j<T100;j++){
-		printf("-v %d\t i %d\n",vet[j],j);
-	}
 	return --i;
 }
 
@@ -623,12 +615,13 @@ void imprimeMenu(){
 }
 
 void imprimirAluno(TLista *lista){
+	limpaTela();
 	TAluno *aux = lista->head;
-	if(aux == NULL) printf("Lista de alunos vazia!\n");
+	if(aux == NULL) printf("Lista de alunos vazia!\n\n");
 	else{
-		printf("\n\tAlunos cadastrados:\n");
+		printf("\n\tAlunos cadastrados:\n\n");
 		while(aux != NULL){
-			printf("Nome: %s\tAceitacao: %d\n", aux->nome, aux->a);
+			printf("Nome: %s\t\t\tAceitacao: %d\n", aux->nome, aux->a);
 			aux = aux->prox;
 		}
 	}
@@ -638,15 +631,22 @@ void limpaLista(TLista *lista){//verificar
 	TAluno *aux = lista->head;
 	TAluno *prox = NULL;
 	while(aux != NULL){
-		printf("Limpando aluno: %s!\n", aux->nome);
 		prox = aux->prox;
 		free(aux);
 		aux = prox;
 	}
 	free(lista);
-	printf("Limpou dados\n");
 }
 
+void limpaTela(){
+	#ifdef LINUX
+		system("clear");
+	#elif WIN32
+		system("cls");
+	#else
+		printf("Plataforma nao suportada\n");
+	#endif
+}
 int main(){
 	TLista *lista = (TLista*)malloc(sizeof(TLista));
 	lista = initLista();
@@ -665,88 +665,7 @@ int main(){
 		}
 
 	} while(opc != 0);
-	
+	imprimirAluno(lista);
 	limpaLista(lista);
 	return 0;
 }
-/*
-	if(veteranice >= 0 && veteranice <= 50){ // veteranice conjunto baixo
-		if(reincidencia >= 0  && reincidencia <=60){ // reincidencia conjutno baixo
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-		if(reincidencia >= 40 && reincidencia <= 80){ // reincidencia conjunto medio
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-		if(reincidencia >= 60 && reincidencia <= 100){ // reincidencia conjunto alto
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-	}
-	if(veteranice >= 35 && veteranice <= 75){ // veteranice conjunto medio
-		if(reincidencia >= 0  && reincidencia <=60){ // reincidencia conjutno baixo
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-		if(reincidencia >= 40 && reincidencia <= 80){ // reincidencia conjunto medio
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-		if(reincidencia >= 60 && reincidencia <= 100){ // reincidencia conjunto alto
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-	}
-	if(veteranice >= 60 && veteranice <= VET){ // veteranice conjunto alto
-		if(reincidencia >= 0  && reincidencia <=60){ // reincidencia conjutno baixo
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-		if(reincidencia >= 40 && reincidencia <= 80){ // reincidencia conjunto medio
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-		if(reincidencia >= 60 && reincidencia <= 100){ // reincidencia conjunto alto
-			if(media >= 0 && media <= 50){ // media conjunto baixo
-			}
-			if(media >= 40 && media <= 80){ // media conjunto medio
-			}
-			if(media >= 70 && media <= 100){ // media conjunto alto
-			}
-		}
-	}
-*/
-
