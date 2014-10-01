@@ -9,23 +9,35 @@
 void criaArquivoEntrada(){
 	FILE *f = fopen("entrada.txt", "w+");
 	
+	int m[TM][TM];
+	int i, j, numero;
+	
+	for(i=0; i < TM; i++){
+		for(j = i; j < TM; j++){
+			if(i == j) m[i][j] = 0;
+			else{
+				numero = rand()%20;
+				if(numero <= 1){
+					numero = -1;
+				}else{
+					numero = rand()%20;
+					numero += 1;
+				}
+				m[i][j] = numero;
+				m[j][i] = numero;
+			}
+		}
+	}
+	
 	if(f == NULL){
 		return;
 	}else{
-		int i, j, numero;
 		for(i=0; i < TM; i++){
 			for(j=0; j < TM; j++){
 				if(i == j){
 					fprintf(f, "%d;", 0);
 				}else{
-					numero = rand()%20;
-					if(numero <= 1){
-						numero = -1;
-					}else{
-						numero = rand()%20;
-						numero += 1;
-					}
-					fprintf(f, "%d;", numero);
+					fprintf(f, "%d;", m[i][j]);
 				}
 			}
 			fprintf(f, "\n");
