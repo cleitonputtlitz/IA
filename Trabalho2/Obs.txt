@@ -1,0 +1,5 @@
+Trabalho 2: Algorítimo Genético
+	* Otimização de condutores eletricos em circuitos industriais.
+	
+	Entradas: Arquivo com Matriz
+	Saída: O caminho com o melhor custo
